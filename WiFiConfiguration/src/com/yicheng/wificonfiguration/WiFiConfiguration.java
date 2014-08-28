@@ -4,6 +4,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -19,8 +21,8 @@ import android.widget.Toast;
 
 public class WiFiConfiguration extends Activity {
 
-	public String networkSSID = "NETGEAR22";
-	public String networkPass = "happyhill330";
+	public String networkSSID = null; 
+	public String networkPass = null; 
 
 	public Button configButton;
 	public Button vibrateButton;
@@ -65,7 +67,7 @@ public class WiFiConfiguration extends Activity {
 		                 wifiManager.disconnect();
 		                 wifiManager.enableNetwork(i.networkId, true);
 		                 wifiManager.reconnect();               
-
+		                 
 		                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		                 while (wifiInfo.getSSID() == null) {
 		                     Log.i("WifiStatus", "Here I am");
@@ -112,9 +114,22 @@ public class WiFiConfiguration extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+    	
+    	//public String networkSSID = null; // "NETGEAR22";
+    	//public String networkPass = null; // "happyhill330";
+    	
+    	//public String networkSSID = "dreamit";
+    	//public String networkPass = "4bhStepsWinBizness97";
+    	
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.dreamit) {
+        	networkSSID = "dreamit";
+        	networkPass = "4bhStepsWinBizness97";
             return true;
+        } else if (id == R.id.apartment) {
+        	networkSSID = "NETGEAR22";
+        	networkPass = "happyhill330";
+        	return true;
         }
         return super.onOptionsItemSelected(item);
     }
