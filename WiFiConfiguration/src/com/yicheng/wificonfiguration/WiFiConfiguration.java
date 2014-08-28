@@ -54,6 +54,9 @@ public class WiFiConfiguration extends Activity {
 		        
 		        Context context = getApplicationContext();
 		        WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE); 
+		        
+		        wifiManager.setWifiEnabled(true);
+		        
 		        wifiManager.addNetwork(conf);
 		        
 		        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
