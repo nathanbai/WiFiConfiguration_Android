@@ -21,23 +21,25 @@ import android.widget.Toast;
 
 public class WiFiConfiguration extends Activity {
 
-	public String networkSSID = null; 
-	public String networkPass = null; 
+	public String networkSSID = null;//"dreamit"; 
+	public String networkPass = null;//"4bhStepsWinBizness97"; 
 
-	public Button configButton;
-	public Button vibrateButton;
+	public Button apartmentButton;
+	public Button dreamitButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_wifi_configuration);
         
-        configButton = (Button)findViewById(R.id.ConfigButton);
-        vibrateButton = (Button)findViewById(R.id.Vibrate);
+        apartmentButton = (Button)findViewById(R.id.ApartmentButton);
+        dreamitButton = (Button)findViewById(R.id.DreamitButton);
         
-        configButton.setOnClickListener(new View.OnClickListener() {
+        apartmentButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				networkSSID = "HOME-D832";
+	        	networkPass = "33ADC9443E4DDADF";
 				
 				WifiConfiguration conf = new WifiConfiguration();
 		        conf.SSID = "\"" + networkSSID + "\"";   // Please note the quotes. String should contain ssid in quotes
@@ -89,14 +91,60 @@ public class WiFiConfiguration extends Activity {
 		});
         
         
-        vibrateButton.setOnClickListener(new View.OnClickListener() {
+        dreamitButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Context context = getApplicationContext();
-				Vibrator vb = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-				vb.vibrate(100);
+				networkSSID = "dreamit"; 
+				networkPass = "4bhStepsWinBizness97"; 
+				
+				WifiConfiguration conf = new WifiConfiguration();
+		        conf.SSID = "\"" + networkSSID + "\"";   // Please note the quotes. String should contain ssid in quotes
+		        
+		        /* for wep*/
+		        //conf.wepKeys[0] = "\"" + networkPass + "\""; 
+		        //conf.wepTxKeyIndex = 0;
+		        //conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+		        //conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+		        
+		        /* for wpa*/
+		        conf.preSharedKey = "\""+ networkPass +"\"";
+		        
+		        /* for open network*/
+		        //conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+		        
+		        Context context = getApplicationContext();
+		        WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE); 
+		        
+		        wifiManager.setWifiEnabled(true);
+		        
+		        wifiManager.addNetwork(conf);
+		        
+		        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+		        for( WifiConfiguration i : list ) {
+		            if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+		                 wifiManager.disconnect();
+		                 wifiManager.enableNetwork(i.networkId, true);
+		                 wifiManager.reconnect();               
+		                 
+		                 WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		                 while (wifiInfo.getSSID() == null) {
+		                     Log.i("WifiStatus", "Here I am");
+		                     try {
+								Thread.sleep(Time.SECOND);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+		                     wifiInfo = wifiManager.getConnectionInfo();
+		                 }
+		                 System.out.println("Connection established");
+		                 Toast.makeText(context, "Connection established", 1000).show();
+		                 
+		                 break;
+		            }           
+		         }
 			}
 		});
     }

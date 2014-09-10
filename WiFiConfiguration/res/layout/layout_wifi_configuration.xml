@@ -10,18 +10,18 @@
 
     
     <Button 
-        android:id="@+id/ConfigButton"
+        android:id="@+id/ApartmentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/buttonText"
+        android:text="@string/ApartmentbuttonText"
         />
 
     <Button 
-        android:id="@+id/Vibrate"
+        android:id="@+id/DreamitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ConfigButton"
-        android:text="@string/vibbuttonText"
+        android:layout_below="@id/ApartmentButton"
+        android:text="@string/DreamitbuttonText"
         />
     
 </RelativeLayout>
